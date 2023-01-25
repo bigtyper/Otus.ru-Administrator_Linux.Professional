@@ -1,0 +1,29 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/ubuntu2210"
+  config.vm.network "public_network", ip: "192.168.1.82"
+
+   config.vm.provider "virtualbox" do |vb|
+     vb.gui = false
+     vb.memory = "4096"
+     vb.cpus = 4
+
+     #vb.customize ["storagectl", :id, "--name", "IDE Controller", "--add", "ide"]
+     vb.customize ["createhd", "disk", "--filename", 'c:\tmp\myhdd01.vdi', "--size", 5120, "--format", "VDI", "--variant", "fixed"]
+     vb.customize ["createhd", "disk", "--filename", 'c:\tmp\myhdd02.vdi', "--size", 5120, "--format", "VDI", "--variant", "fixed"]
+     vb.customize ["createhd", "disk", "--filename", 'c:\tmp\myhdd03.vdi', "--size", 5120, "--format", "VDI", "--variant", "fixed"]
+     vb.customize ["createhd", "disk", "--filename", 'c:\tmp\myhdd04.vdi', "--size", 5120, "--format", "VDI", "--variant", "fixed"]
+     vb.customize ["createhd", "disk", "--filename", 'c:\tmp\myhdd05.vdi', "--size", 5120, "--format", "VDI", "--variant", "fixed"]
+     
+
+     vb.customize ["storageattach", :id,  "--storagectl", "SATA Controller", "--port", 2, "--device", 0, "--type", "hdd", "--medium",'c:\tmp\myhdd01.vdi']
+     vb.customize ["storageattach", :id,  "--storagectl", "SATA Controller", "--port", 3, "--device", 0, "--type", "hdd", "--medium",'c:\tmp\myhdd02.vdi']
+     vb.customize ["storageattach", :id,  "--storagectl", "SATA Controller", "--port", 4, "--device", 0, "--type", "hdd", "--medium",'c:\tmp\myhdd03.vdi']
+     vb.customize ["storageattach", :id,  "--storagectl", "SATA Controller", "--port", 5, "--device", 0, "--type", "hdd", "--medium",'c:\tmp\myhdd04.vdi']
+     vb.customize ["storageattach", :id,  "--storagectl", "SATA Controller", "--port", 6, "--device", 0, "--type", "hdd", "--medium",'c:\tmp\myhdd05.vdi']
+
+   end
+   config.vm.provision "shell", inline: <<-SHELL
+     apt-get update
+     apt-get install -y vim mdadm 
+   SHELL
+end
