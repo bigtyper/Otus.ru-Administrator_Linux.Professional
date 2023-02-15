@@ -1,0 +1,10 @@
+---
+- hosts: ubu2210_nfsc
+  tasks:
+    - name: install mc vim nfs-common and may be over
+      apt:
+       name:
+        - mc
+        - vim
+        - nfs-common
+       state: present
