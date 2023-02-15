@@ -1,0 +1,20 @@
+---
+- name:
+  hosts: ubu2210_nfsc
+  tasks:
+    - name: Creates directory
+      ansible.builtin.file:
+       path: /var/nfsdir
+       state: directory
+       owner: nobody
+       group: nogroup
+       mode: '0777'
+       recurse: yes
+
+    - name: Mount an NFS volume
+      ansible.posix.mount:
+       src: 10.10.25.181:/var/nfsdir
+       path: /var/nfsdir
+       opts: rw,sync,hard
+       state: mounted
+       fstype: nfs
