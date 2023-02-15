@@ -1,0 +1,24 @@
+---
+- hosts: myubu2210vms
+  tasks:
+   - name: Set logging
+     community.general.ufw:
+      logging: 'on'
+
+   - name: allow SSH
+     community.general.ufw:
+      rule: allow
+      name: OpenSSH
+
+   - name: allow NFS
+     community.general.ufw:
+      rule: allow
+      port: 2049
+      proto: any
+
+
+   - name: Deny everything and enable SSH, NFS
+     community.general.ufw:
+      state: enabled
+      policy: deny
+      
