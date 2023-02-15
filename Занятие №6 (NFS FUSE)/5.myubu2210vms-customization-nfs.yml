@@ -1,0 +1,26 @@
+---
+- name:
+  hosts: ubu2210_nfss
+  tasks:
+    - name: Creates directory
+      ansible.builtin.file:
+       path: /var/nfsdir/upload
+       state: directory
+       owner: root
+       group: root
+       mode: '0777'
+       recurse: yes
+
+    - name: Copy old config file
+      copy: remote_src=True src=/etc/exports dest=/etc/exports.bak
+
+    - name:
+      ansible.builtin.copy:
+       src: /etc/ansible/exports
+       dest: /etc/
+       follow: yes
+
+    - name:
+      service:
+       name: nfs-server
+       state: restarted
