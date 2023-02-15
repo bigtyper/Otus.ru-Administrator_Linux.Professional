@@ -1,0 +1,10 @@
+---
+- hosts: ubu2210_nfss
+  tasks:
+    - name: install mc vim nfs-kernel-server and may be over
+      apt:
+       name:
+        - mc
+        - vim
+        - nfs-kernel-server
+       state: present
