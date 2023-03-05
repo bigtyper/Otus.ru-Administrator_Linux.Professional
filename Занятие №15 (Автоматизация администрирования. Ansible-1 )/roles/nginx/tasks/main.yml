@@ -1,0 +1,19 @@
+---
+- name: update cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+#  when: ansible_facts['os_famaly'] == "Debian"
+
+- name: install nginx
+  ansible.builtin.apt:
+    pkg: nginx
+    state: present
+#  when: ansible_facts['os_famaly'] == "Debian"
+  notify:
+    - start_nginx
+
+- name: replace default
+  ansible.builtin.template:
+    src=templates/default
+    dest=/etc/nginx/sites-available/default
