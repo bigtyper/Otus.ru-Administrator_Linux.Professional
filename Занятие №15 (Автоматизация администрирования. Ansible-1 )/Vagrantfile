@@ -1,0 +1,25 @@
+servers=[
+  {
+    :hostname => "ubu2210-mynginxtest",
+    :ip => "10.10.25.141",
+    :box => "generic/ubuntu2210",
+    :ram => 4096,
+    :cpu => 4
+  }
+]
+
+Vagrant.configure("2") do |config|
+servers.each do |machine|
+        config.vm.define machine[:hostname] do |node|
+            node.vm.box = machine[:box]
+            node.vm.hostname = machine[:hostname]
+            node.vm.network "public_network", ip: machine[:ip]
+            node.vm.provider "virtualbox" do |vb|
+                vb.customize ["modifyvm", :id, "--memory", machine[:ram]]
+            end
+        end
+    end
+config.vm.provision "shell",
+  run: "always",
+  inline: "ip route add default via 10.10.25.250"
+end
